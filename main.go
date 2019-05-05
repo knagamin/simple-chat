@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
 	"text/template"
@@ -36,6 +37,7 @@ func main() {
 	var addr = flag.String("addr", ":8080", "192.168.17.218")
 	flag.Parse()
 	r := newRoom()
+	r.tracer.Trace(os.Stdout)
 	// Setup Somniauth
 	gomniauth.SetSecurityKey("ThisShou1dBeComplex!!")
 	gomniauth.WithProviders(

@@ -27,7 +27,7 @@
 						alert("error: WebSocket connection is not found");
 						return false;
 					}
-					socket.send(msgBox.val());
+					socket.send(JSON.stringify({"Message": msgBox.val()}));
 					msgBox.val("");
 					return false;
 				});
@@ -39,7 +39,14 @@
 						alert("Disconnected.");
 					}
 					socket.onmessage = function(e) {
-						messages.append($("<li>").text(e.data));
+						var msg = JSON.parse(e.data)
+						messages.append(
+							$("<li>").append(
+								$("<strong>").text(msg.Name + ":"),
+								$("<span>").text(msg.Message),
+								$("<span>").text(msg.When)
+							)
+						);
 					}
 				}
 			});
