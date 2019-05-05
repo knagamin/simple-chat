@@ -1,6 +1,7 @@
 package main
 
 import (
+	"knagamin/chat-app/trace"
 	"log"
 	"net/http"
 
@@ -12,6 +13,7 @@ type room struct {
 	join    chan *client     // channel for managing clients who is getting to join
 	leave   chan *client     // channel for managing clients who is getting to leave
 	clients map[*client]bool // have exsisting clients
+	tracer  trace.Tracer
 }
 
 func newRoom() *room {
@@ -20,6 +22,7 @@ func newRoom() *room {
 		join:    make(chan *client),
 		leave:   make(chan *client),
 		clients: make(map[*client]bool),
+		tracer:  trace.Off(),
 	}
 }
 
@@ -28,16 +31,21 @@ func (r *room) run() {
 		select {
 		case client := <-r.join:
 			r.clients[client] = true
+			r.tracer.Trace("New client joined.")
 		case client := <-r.leave:
 			delete(r.clients, client)
 			close(client.send)
+			r.tracer.Trace("A client left.")
 		case msg := <-r.forward:
 			for client := range r.clients {
+				r.tracer.Trace("Recieved a message: ", string(msg))
 				select {
 				case client.send <- msg:
+					r.tracer.Trace(" -- A message was sent to clients")
 				default:
 					delete(r.clients, client)
 					close(client.send)
+					r.tracer.Trace(" -- Sending was failed. The client is being cleaned up.")
 				}
 			}
 		}
