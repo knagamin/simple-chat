@@ -1,7 +1,7 @@
 package main
 
 import (
-	"knagamin/chat-app/trace"
+	"chat-app/trace"
 	"log"
 	"net/http"
 

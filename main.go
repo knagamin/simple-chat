@@ -1,6 +1,7 @@
 package main
 
 import (
+	"chat-app/trace"
 	"flag"
 	"log"
 	"net/http"
@@ -37,7 +38,7 @@ func main() {
 	var addr = flag.String("addr", ":8080", "192.168.17.218")
 	flag.Parse()
 	r := newRoom()
-	r.tracer.Trace(os.Stdout)
+	r.tracer = trace.New(os.Stdout)
 	// Setup Somniauth
 	gomniauth.SetSecurityKey("ThisShou1dBeComplex!!")
 	gomniauth.WithProviders(
@@ -47,7 +48,6 @@ func main() {
 			"http://localhost:8080/auth/callback/google", // callback URI
 		),
 	)
-	//r.tracer = trace.New(os.Stdout)
 	http.Handle("/", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
 	http.HandleFunc("/auth/", loginHandler)
