@@ -1,12 +1,12 @@
 package main
 
 import (
-	"chat-app/trace"
 	"flag"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"simple-chat/trace"
 	"sync"
 	"text/template"
 

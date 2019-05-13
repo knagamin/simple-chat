@@ -1,9 +1,9 @@
 package main
 
 import (
-	"chat-app/trace"
 	"log"
 	"net/http"
+	"simple-chat/trace"
 
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/objx"
