@@ -3,7 +3,7 @@ dist: xenial
 language: go
 
 go:
-  - 1.15.x
+  - 1.11.x
 
 git:
   depth: 1
@@ -13,5 +13,8 @@ install: true
 notification:
   email: false
 
+before_script:
+ - go get -t -v ./...
+
 script:
- - go test -v ./..
+ - go test -v ./...

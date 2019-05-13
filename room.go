@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 	"net/http"
-	"simple-chat/trace"
 
 	"github.com/gorilla/websocket"
+	"github.com/knagamin/simple-chat/trace"
 	"github.com/stretchr/objx"
 )
 
