@@ -3,6 +3,7 @@ package trace
 import (
 	"fmt"
 	"io"
+	"log"
 )
 
 type Tracer interface {
@@ -18,8 +19,15 @@ func New(w io.Writer) Tracer {
 }
 
 func (t *tracer) Trace(a ...interface{}) {
-	t.out.Write([]byte(fmt.Sprint(a...)))
-	t.out.Write([]byte("\n"))
+
+	// [TODO] should not repeat it.
+	if _, err := t.out.Write([]byte(fmt.Sprint(a...))); err != nil {
+		log.Fatal("can not write by Tracer")
+	}
+	if _, err := t.out.Write([]byte("\n")); err != nil {
+		log.Fatal("can not write by Tracer")
+	}
+
 }
 
 type nilTracer struct{}

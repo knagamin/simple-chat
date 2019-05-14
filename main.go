@@ -31,7 +31,9 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if authCookie, err := r.Cookie("auth"); err == nil {
 		data["UserData"] = objx.MustFromBase64(authCookie.Value)
 	}
-	t.templ.Execute(w, data)
+	if err := t.templ.Execute(w, data); err != nil {
+		log.Fatal("problem occurred for executing template")
+	}
 }
 
 func main() {
