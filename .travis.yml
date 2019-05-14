@@ -14,7 +14,9 @@ notification:
   email: false
 
 before_script:
+ - go get github.com/golangci/golangci-lint/cmd/golangci-lint
  - go get -t -v ./...
 
 script:
+ - golangci-lint run
  - go test -v -race ./...
